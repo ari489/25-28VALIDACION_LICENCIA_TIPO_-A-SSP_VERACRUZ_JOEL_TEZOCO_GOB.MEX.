@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Licencia Tipo A — TEZOCO MAZAHUA JOEL</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Arial', sans-serif; }
+        body { background: #e9e9e9; display: flex; flex-direction: column; align-items: center; padding: 15px; gap: 20px; transform: scale(0.85); transform-origin: top center; }
+        h2 { font-size: 20px; color: #222; font-weight: 700; }
+        .cambio-vista { 
+            padding: 12px 30px; font-size: 17px; 
+            background: linear-gradient(180deg, #8B0000 0%, #660000 100%); 
+            color: #fff; border: none; border-radius: 6px; 
+            cursor: pointer; font-weight: bold;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+        }
+        .oculto { display: none !important; }
+
+        .licencia {
+            width: 1180px; height: 760px; 
+            background: linear-gradient(90deg, #fff 0%, #fafafa 100%);
+            border: 2px solid #B8860B; 
+            position: relative; overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2), inset 0 0 60px rgba(184,134,11,0.05);
+        }
+
+        .banda-superior-repetida {
+            position: absolute; top: 0; left: 0; right: 0; height: 22px;
+            background: #B8860B;
+            color: #fff; font-size: 8px; letter-spacing: 1px;
+            display: flex; align-items: center; overflow: hidden;
+            white-space: nowrap; z-index: 10;
+        }
+
+        .escudo-veracruz { position: absolute; top: 30px; left: 38px; width: 100px; height: 100px; z-index: 5; }
+        .texto-veracruz { position: absolute; top: 35px; left: 150px; font-size: 28px; font-weight: 900; color: #660000; line-height: 1.2; z-index: 5; }
+        .escudo-ssp { position: absolute; top: 30px; left: 400px; width: 88px; height: 88px; z-index: 5; }
+        .texto-ssp { position: absolute; top: 35px; left: 500px; font-size: 22px; font-weight: bold; color: #c00; z-index: 5; }
+        .texto-ssp small { font-size: 12px; color: #333; font-weight: normal; display: block; }
+        .logo-veracruz-marca { position: absolute; top: 32px; left: 690px; font-size: 36px; font-weight: 900; color: #8B4513; letter-spacing: -1px; z-index: 5; }
+
+        .foto-principal { 
+            position: absolute; top: 150px; left: 38px; 
+            width: 225px; height: 275px; 
+            border: 2px solid #888; background: #ddd; z-index: 5;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.15);
+        }
+        .foto-principal img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .marca-mexico { position: absolute; top: 440px; left: 42px; font-size: 48px; font-weight: 900; color: #8B4513; letter-spacing: -2px; z-index: 5; }
+
+        .datos { 
+            position: absolute; top: 150px; left: 295px; 
+            line-height: 45px; font-size: 25px; font-weight: 700; 
+            color: #000; z-index: 5;
+        }
+        .foto-chica { 
+            position: absolute; top: 158px; right: 238px; 
+            width: 130px; height: 162px; 
+            border: 1px solid #aaa; opacity: 0.65; z-index: 5;
+        }
+        .foto-chica img { width: 100%; height: 100%; object-fit: cover; }
+        .firma-texto { 
+            position: absolute; top: 338px; right: 228px; 
+            font-size: 13px; font-style: italic; color: #333; z-index: 5;
+        }
+
+        .franja-der {
+            position: absolute; top: 0; right: 0; width: 220px; height: 100%;
+            background: linear-gradient(180deg, #FFD300 0%, #F0C400 30%, #E6BC00 60%, #D4A800 100%);
+            display: flex; flex-direction: column; align-items: center; padding-top: 42px;
+            border-left: 2px solid #B8860B; z-index: 5;
+        }
+        .patron-geometrico {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(45deg, rgba(139,69,19,0.12) 25%, transparent 25%),
+                linear-gradient(-45deg, rgba(139,69,19,0.12) 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, rgba(139,69,19,0.12) 75%),
+                linear-gradient(-45deg, transparent 75%, rgba(139,69,19,0.12) 75%);
+            background-size: 45px 45px;
+            background-position: 0 0, 0 22.5px, 22.5px -22.5px, -22.5px 0;
+            pointer-events: none; z-index: 6;
+        }
+        .franja-der .tipo-texto { font-size: 24px; font-weight: 800; color: #000; z-index: 7; }
+        .franja-der .letra-a { font-size: 70px; font-weight: 900; color: #000; margin: 8px 0 16px 0; z-index: 7; }
+        .franja-der canvas { width: 170px !important; height: 170px !important; background: #fff; padding: 6px; border-radius: 4px; border: 1px solid #ccc; margin-top: 4px; z-index: 7; }
+        .franja-der .zona { font-size: 21px; font-weight: 800; color: #000; margin-top: 12px; z-index: 7; }
+
+        .banda-inferior {
+            position: absolute; bottom: 0; left: 0; right: 0; height: 140px;
+            background: linear-gradient(180deg, #FFD300 0%, #E6BC00 50%, #CC9900 100%);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            border-top: 3px solid #B8860B; z-index: 5;
+        }
+        .banda-inferior .texto-principal { font-size: 45px; font-weight: 900; color: #8B0000; margin-bottom: 4px; letter-spacing: 1px; text-shadow: 0 1px 0 rgba(255,255,255,0.3); }
+        .banda-inferior .texto-secundario { font-size: 28px; font-weight: 800; color: #8B0000; letter-spacing: 0.5px; }
+
+        .reverso .mapa { position: absolute; top: 42px; left: 42px; width: 190px; height: 240px; z-index: 5; }
+        .reverso .datos-rev { 
+            position: absolute; top: 42px; left: 300px; 
+            line-height: 48px; font-size: 24px; font-weight: 700; 
+            color: #000; z-index: 5;
+        }
+        .reverso .leyenda-autoriza { 
+            position: absolute; top: 335px; left: 42px; right: 250px; 
+            font-size: 21px; line-height: 1.6; font-weight: 600; 
+            color: #111; z-index: 5;
+        }
+        .reverso .folio { position: absolute; top: 42px; right: 42px; z-index: 5; }
+        .reverso #qr-reverso { width: 160px; height: 160px; background: #fff; padding: 6px; border-radius: 4px; border: 1px solid #ccc; }
+        .reverso .franja-inferior {
+            position: absolute; bottom: 0; left: 0; right: 0; height: 160px;
+            background: linear-gradient(180deg, #FFD300 0%, #E6BC00 100%);
+            border-top: 3px solid #B8860B;
+            display: flex; flex-direction: column; justify-content: center; padding: 0 42px;
+            font-family: 'Courier New', monospace; font-size: 34px; 
+            font-weight: 900; letter-spacing: 3px; color: #000; z-index: 5;
+        }
+    </style>
+</head>
+<body>
+
+    <h2 id="titulo-vista">🔵 FRENTE — Licencia Tipo A Veracruz</h2>
+    <button class="cambio-vista" onclick="cambiarVista()">👉 TOCAR PARA VER EL REVERSO</button>
+    
+    <div class="licencia" id="frente">
+        <div class="banda-superior-repetida">VERACRUZ — GOBIERNO DEL ESTADO DE VERACRUZ — GOBIERNO DEL ESTADO DE VERACRUZ — GOBIERNO DEL ESTADO DE VERACRUZ</div>
+        
+        <div class="escudo-veracruz">
+            <svg viewBox="0 0 100 100"><path d="M50 7L10 23v60l40 18 40-18V23L50 7z" fill="#660000"/><path d="M50 17L17 30v53l33 15 33-15V30L50 17z" fill="#FFD300"/><circle cx="50" cy="50" r="17" fill="#fff"/><text x="50" y="56" text-anchor="middle" font-size="13" font-weight="bold" fill="#660000">VERACRUZ</text></svg>
+        </div>
+        <div class="texto-veracruz">VERACRUZ<br>GOBIERNO<br>DEL ESTADO</div>
+        <div class="escudo-ssp">
+            <svg viewBox="0 0 88 88"><rect x="4" y="4" width="80" height="80" rx="5" fill="#e0e0e0" stroke="#333" stroke-width="2"/><rect x="13" y="13" width="62" height="58" fill="#fff"/><text x="44" y="49" text-anchor="middle" font-size="18" font-weight="bold" fill="#c00">SSP</text></svg>
+        </div>
+        <div class="texto-ssp">SSP<br><small>Secretaría de Seguridad Pública</small></div>
+        <div class="logo-veracruz-marca">VERACRUZ</div>
+
+        <div class="foto-principal"><img src="fondo.jpg" alt="TEZOCO MAZAHUA JOEL"></div>
+        <div class="marca-mexico">MÉXICO</div>
+        <div class="datos">
+            <p>TEZOCO MAZAHUA JOEL</p>
+            <p>CURP TEMJ880819HVZZZL07</p>
+            <p>FECHA NACIMIENTO 19/08/1988</p>
+            <p>FECHA DE EMISIÓN 23/11/2025</p>
+            <p>FECHA DE EXPEDICIÓN 23/11/2028</p>
+            <p>IDENTIFICADOR DEL CONDUCTOR UA00304895</p>
+        </div>
+        <div class="foto-chica"><img src="fondo.jpg" alt="Foto reducida"></div>
+        <div class="firma-texto">firma del titular del documento</div>
+
+        <div class="franja-der">
+            <div class="patron-geometrico"></div>
+            <div class="tipo-texto">TIPO</div>
+            <div class="letra-a">A</div>
+            <canvas id="qr-frente"></canvas>
+            <div class="zona">30 - VERACRUZ</div>
+        </div>
+
+        <div class="banda-inferior">
+            <div class="texto-principal">LICENCIA PARA CONDUCIR</div>
+            <div class="texto-secundario">ESTADO DE VERACRUZ</div>
+        </div>
+    </div>
+
+    <div class="licencia oculto reverso" id="reverso">
+        <div class="banda-superior-repetida">VERACRUZ — GOBIERNO DEL ESTADO DE VERACRUZ — GOBIERNO DEL ESTADO DE VERACRUZ</div>
+        
+        <div class="mapa">
+            <svg viewBox="0 0 190 240"><path d="M38,30 L54,21 L71,25 L83,17 L96,21 L108,34 L121,38 L129,51 L133,64 L137,81 L133,98 L137,115 L133,132 L125,149 L112,162 L100,175 L87,183 L74,191 L62,187 L49,172 L41,155 L37,139 L33,122 L29,105 L33,88 L29,71 L33,54 Z" fill="#222"/><rect x="13" y="38" width="23" height="23" fill="#FFD300" transform="rotate(45 24 50)"/><rect x="46" y="72" width="27" height="27" fill="#FFD300" transform="rotate(45 59 86)"/></svg>
+        </div>
+
+        <div class="datos-rev">
+            <p>SEXO M</p>
+            <p>GRUPO SANGUÍNEO O+</p>
+            <p>RESTRICCIONES NINGUNA</p>
+            <p>DONADOR NO</p>
+            <p>LUGAR DE EXPEDICIÓN VERACRUZ</p>
+        </div>
+
+        <div class="leyenda-autoriza">
+            AUTORIZA A SU TITULAR CONDUCIR VEHÍCULOS DE TRANSPORTE DE CARGA Y TRANSPORTE PÚBLICO DE PASAJEROS, DE ACUERDO A LAS DISPOSICIONES LEGALES APLICABLES.
+        </div>
+
+        <div class="folio"><canvas id="qr-reverso"></canvas></div>
+
+        <div class="franja-inferior">
+            L&lt;&lt;UA00304895&lt;&lt;TEMJ880819HVZZZL07&lt;&lt;&lt;&lt;<br>
+            &lt;&lt;TEZOCO&lt;&lt;JOEL&lt;&lt;MAZAHUA&lt;&lt;&lt;23/11/2028&lt;
+        </div>
+    </div>
+
+<script>
+const contenidoQR = `LICENCIA TIPO A - VERACRUZ
+NOMBRE: TEZOCO MAZAHUA JOEL
+CURP: TEMJ880819HVZZZL07
+FOLIO: UA00304895
+SEXO: M
+NACIMIENTO: 19/08/1988
+EMISIÓN: 23/11/2025
+VIGENCIA: 23/11/2028
+LUGAR: VERACRUZ
+AUTORIZACIÓN: TRANSPORTE DE CARGA Y PÚBLICO`;
+
+QRCode.toCanvas(document.getElementById('qr-frente'), contenidoQR, { width: 160, margin: 4 }, e=>e&&console.error(e));
+QRCode.toCanvas(document.getElementById('qr-reverso'), contenidoQR, { width: 150, margin: 4 }, e=>e&&console.error(e));
+
+let esFrente = true;
+function cambiarVista() {
+    esFrente = !esFrente;
+    document.getElementById('frente').classList.toggle('oculto');
+    document.getElementById('reverso').classList.toggle('oculto');
+    document.getElementById('titulo-vista').textContent = esFrente ? '🔵 FRENTE' : '🔙 REVERSO';
+    document.querySelector('.cambio-vista').textContent = esFrente ? '👉 TOCAR PARA VER EL REVERSO' : '👈 TOCAR PARA VER EL FRENTE';
+}
+</script>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Licencia Tipo A — TEZOCO MAZAHUA JOEL</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Arial', sans-serif; }
+        body { background: #e9e9e9; display: flex; flex-direction: column; align-items: center; padding: 15px; gap: 20px; transform: scale(0.85); transform-origin: top center; }
+        h2 { font-size: 20px; color: #222; font-weight: 700; }
+        .cambio-vista { 
+            padding: 12px 30px; font-size: 17px; 
+            background: linear-gradient(180deg, #8B0000 0%, #660000 100%); 
+            color: #fff; border: none; border-radius: 6px; 
+            cursor: pointer; font-weight: bold;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+        }
+        .oculto { display: none !important; }
+
+        .licencia {
+            width: 1180px; height: 760px; 
+            background: linear-gradient(90deg, #fff 0%, #fafafa 100%);
+            border: 2px solid #B8860B; 
+            position: relative; overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2), inset 0 0 60px rgba(184,134,11,0.05);
+        }
+
+        .banda-superior-repetida {
+            position: absolute; top: 0; left: 0; right: 0; height: 22px;
+            background: #B8860B;
+            color: #fff; font-size: 8px; letter-spacing: 1px;
+            display: flex; align-items: center; overflow: hidden;
+            white-space: nowrap; z-index: 10;
+        }
+
+        .escudo-veracruz { position: absolute; top: 30px; left: 38px; width: 100px; height: 100px; z-index: 5; }
+        .texto-veracruz { position: absolute; top: 35px; left: 150px; font-size: 28px; font-weight: 900; color: #660000; line-height: 1.2; z-index: 5; }
+        .escudo-ssp { position: absolute; top: 30px; left: 400px; width: 88px; height: 88px; z-index: 5; }
+        .texto-ssp { position: absolute; top: 35px; left: 500px; font-size: 22px; font-weight: bold; color: #c00; z-index: 5; }
+        .texto-ssp small { font-size: 12px; color: #333; font-weight: normal; display: block; }
+        .logo-veracruz-marca { position: absolute; top: 32px; left: 690px; font-size: 36px; font-weight: 900; color: #8B4513; letter-spacing: -1px; z-index: 5; }
+
+        .foto-principal { 
+            position: absolute; top: 150px; left: 38px; 
+            width: 225px; height: 275px; 
+            border: 2px solid #888; background: #ddd; z-index: 5;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.15);
+        }
+        .foto-principal img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .marca-mexico { position: absolute; top: 440px; left: 42px; font-size: 48px; font-weight: 900; color: #8B4513; letter-spacing: -2px; z-index: 5; }
+
+        .datos { 
+            position: absolute; top: 150px; left: 295px; 
+            line-height: 45px; font-size: 25px; font-weight: 700; 
+            color: #000; z-index: 5;
+        }
+        .foto-chica { 
+            position: absolute; top: 158px; right: 238px; 
+            width: 130px; height: 162px; 
+            border: 1px solid #aaa; opacity: 0.65; z-index: 5;
+        }
+        .foto-chica img { width: 100%; height: 100%; object-fit: cover; }
+        .firma-texto { 
+            position: absolute; top: 338px; right: 228px; 
+            font-size: 13px; font-style: italic; color: #333; z-index: 5;
+        }
+
+        .franja-der {
+            position: absolute; top: 0; right: 0; width: 220px; height: 100%;
+            background: linear-gradient(180deg, #FFD300 0%, #F0C400 30%, #E6BC00 60%, #D4A800 100%);
+            display: flex; flex-direction: column; align-items: center; padding-top: 42px;
+            border-left: 2px solid #B8860B; z-index: 5;
+        }
+        .patron-geometrico {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(45deg, rgba(139,69,19,0.12) 25%, transparent 25%),
+                linear-gradient(-45deg, rgba(139,69,19,0.12) 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, rgba(139,69,19,0.12) 75%),
+                linear-gradient(-45deg, transparent 75%, rgba(139,69,19,0.12) 75%);
+            background-size: 45px 45px;
+            background-position: 0 0, 0 22.5px, 22.5px -22.5px, -22.5px 0;
+            pointer-events: none; z-index: 6;
+        }
+        .franja-der .tipo-texto { font-size: 24px; font-weight: 800; color: #000; z-index: 7; }
+        .franja-der .letra-a { font-size: 70px; font-weight: 900; color: #000; margin: 8px 0 16px 0; z-index: 7; }
+        .franja-der canvas { width: 170px !important; height: 170px !important; background: #fff; padding: 6px; border-radius: 4px; border: 1px solid #ccc; margin-top: 4px; z-index: 7; }
+        .franja-der .zona { font-size: 21px; font-weight: 800; color: #000; margin-top: 12px; z-index: 7; }
+
+        .banda-inferior {
+            position: absolute; bottom: 0; left: 0; right: 0; height: 140px;
+            background: linear-gradient(180deg, #FFD300 0%, #E6BC00 50%, #CC9900 100%);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            border-top: 3px solid #B8860B; z-index: 5;
+        }
+        .banda-inferior .texto-principal { font-size: 45px; font-weight: 900; color: #8B0000; margin-bottom: 4px; letter-spacing: 1px; text-shadow: 0 1px 0 rgba(255,255,255,0.3); }
+        .banda-inferior .texto-secundario { font-size: 28px; font-weight: 800; color: #8B0000; letter-spacing: 0.5px; }
+
+        .reverso .mapa { position: absolute; top: 42px; left: 42px; width: 190px; height: 240px; z-index: 5; }
+        .reverso .datos-rev { 
+            position: absolute; top: 42px; left: 300px; 
+            line-height: 48px; font-size: 24px; font-weight: 700; 
+            color: #000; z-index: 5;
+        }
+        .reverso .leyenda-autoriza { 
+            position: absolute; top: 335px; left: 42px; right: 250px; 
+            font-size: 21px; line-height: 1.6; font-weight: 600; 
+            color: #111; z-index: 5;
+        }
+        .reverso .folio { position: absolute; top: 42px; right: 42px; z-index: 5; }
+        .reverso #qr-reverso { width: 160px; height: 160px; background: #fff; padding: 6px; border-radius: 4px; border: 1px solid #ccc; }
+        .reverso .franja-inferior {
+            position: absolute; bottom: 0; left: 0; right: 0; height: 160px;
+            background: linear-gradient(180deg, #FFD300 0%, #E6BC00 100%);
+            border-top: 3px solid #B8860B;
+            display: flex; flex-direction: column; justify-content: center; padding: 0 42px;
+            font-family: 'Courier New', monospace; font-size: 34px; 
+            font-weight: 900; letter-spacing: 3px; color: #000; z-index: 5;
+        }
+    </style>
+</head>
+<body>
+
+    <h2 id="titulo-vista">🔵 FRENTE — Licencia Tipo A Veracruz</h2>
+    <button class="cambio-vista" onclick="cambiarVista()">👉 TOCAR PARA VER EL REVERSO</button>
+    
+    <div class="licencia" id="frente">
+        <div class="banda-superior-repetida">VERACRUZ — GOBIERNO DEL ESTADO DE VERACRUZ — GOBIERNO DEL ESTADO DE VERACRUZ — GOBIERNO DEL ESTADO DE VERACRUZ</div>
+        
+        <div class="escudo-veracruz">
+            <svg viewBox="0 0 100 100"><path d="M50 7L10 23v60l40 18 40-18V23L50 7z" fill="#660000"/><path d="M50 17L17 30v53l33 15 33-15V30L50 17z" fill="#FFD300"/><circle cx="50" cy="50" r="17" fill="#fff"/><text x="50" y="56" text-anchor="middle" font-size="13" font-weight="bold" fill="#660000">VERACRUZ</text></svg>
+        </div>
+        <div class="texto-veracruz">VERACRUZ<br>GOBIERNO<br>DEL ESTADO</div>
+        <div class="escudo-ssp">
+            <svg viewBox="0 0 88 88"><rect x="4" y="4" width="80" height="80" rx="5" fill="#e0e0e0" stroke="#333" stroke-width="2"/><rect x="13" y="13" width="62" height="58" fill="#fff"/><text x="44" y="49" text-anchor="middle" font-size="18" font-weight="bold" fill="#c00">SSP</text></svg>
+        </div>
+        <div class="texto-ssp">SSP<br><small>Secretaría de Seguridad Pública</small></div>
+        <div class="logo-veracruz-marca">VERACRUZ</div>
+
+        <div class="foto-principal"><img src="fondo.jpg" alt="TEZOCO MAZAHUA JOEL"></div>
+        <div class="marca-mexico">MÉXICO</div>
+        <div class="datos">
+            <p>TEZOCO MAZAHUA JOEL</p>
+            <p>CURP TEMJ880819HVZZZL07</p>
+            <p>FECHA NACIMIENTO 19/08/1988</p>
+            <p>FECHA DE EMISIÓN 23/11/2025</p>
+            <p>FECHA DE EXPEDICIÓN 23/11/2028</p>
+            <p>IDENTIFICADOR DEL CONDUCTOR UA00304895</p>
+        </div>
+        <div class="foto-chica"><img src="fondo.jpg" alt="Foto reducida"></div>
+        <div class="firma-texto">firma del titular del documento</div>
+
+        <div class="franja-der">
+            <div class="patron-geometrico"></div>
+            <div class="tipo-texto">TIPO</div>
+            <div class="letra-a">A</div>
+            <canvas id="qr-frente"></canvas>
+            <div class="zona">30 - VERACRUZ</div>
+        </div>
+
+        <div class="banda-inferior">
+            <div class="texto-principal">LICENCIA PARA CONDUCIR</div>
+            <div class="texto-secundario">ESTADO DE VERACRUZ</div>
+        </div>
+    </div>
+
+    <div class="licencia oculto reverso" id="reverso">
+        <div class="banda-superior-repetida">VERACRUZ — GOBIERNO DEL ESTADO DE VERACRUZ — GOBIERNO DEL ESTADO DE VERACRUZ</div>
+        
+        <div class="mapa">
+            <svg viewBox="0 0 190 240"><path d="M38,30 L54,21 L71,25 L83,17 L96,21 L108,34 L121,38 L129,51 L133,64 L137,81 L133,98 L137,115 L133,132 L125,149 L112,162 L100,175 L87,183 L74,191 L62,187 L49,172 L41,155 L37,139 L33,122 L29,105 L33,88 L29,71 L33,54 Z" fill="#222"/><rect x="13" y="38" width="23" height="23" fill="#FFD300" transform="rotate(45 24 50)"/><rect x="46" y="72" width="27" height="27" fill="#FFD300" transform="rotate(45 59 86)"/></svg>
+        </div>
+
+        <div class="datos-rev">
+            <p>SEXO M</p>
+            <p>GRUPO SANGUÍNEO O+</p>
+            <p>RESTRICCIONES NINGUNA</p>
+            <p>DONADOR NO</p>
+            <p>LUGAR DE EXPEDICIÓN VERACRUZ</p>
+        </div>
+
+        <div class="leyenda-autoriza">
+            AUTORIZA A SU TITULAR CONDUCIR VEHÍCULOS DE TRANSPORTE DE CARGA Y TRANSPORTE PÚBLICO DE PASAJEROS, DE ACUERDO A LAS DISPOSICIONES LEGALES APLICABLES.
+        </div>
+
+        <div class="folio"><canvas id="qr-reverso"></canvas></div>
+
+        <div class="franja-inferior">
+            L&lt;&lt;UA00304895&lt;&lt;TEMJ880819HVZZZL07&lt;&lt;&lt;&lt;<br>
+            &lt;&lt;TEZOCO&lt;&lt;JOEL&lt;&lt;MAZAHUA&lt;&lt;&lt;23/11/2028&lt;
+        </div>
+    </div>
+
+<script>
+const contenidoQR = `LICENCIA TIPO A - VERACRUZ
+NOMBRE: TEZOCO MAZAHUA JOEL
+CURP: TEMJ880819HVZZZL07
+FOLIO: UA00304895
+SEXO: M
+NACIMIENTO: 19/08/1988
+EMISIÓN: 23/11/2025
+VIGENCIA: 23/11/2028
+LUGAR: VERACRUZ
+AUTORIZACIÓN: TRANSPORTE DE CARGA Y PÚBLICO`;
+
+QRCode.toCanvas(document.getElementById('qr-frente'), contenidoQR, { width: 160, margin: 4 }, e=>e&&console.error(e));
+QRCode.toCanvas(document.getElementById('qr-reverso'), contenidoQR, { width: 150, margin: 4 }, e=>e&&console.error(e));
+
+let esFrente = true;
+function cambiarVista() {
+    esFrente = !esFrente;
+    document.getElementById('frente').classList.toggle('oculto');
+    document.getElementById('reverso').classList.toggle('oculto');
+    document.getElementById('titulo-vista').textContent = esFrente ? '🔵 FRENTE' : '🔙 REVERSO';
+    document.querySelector('.cambio-vista').textContent = esFrente ? '👉 TOCAR PARA VER EL REVERSO' : '👈 TOCAR PARA VER EL FRENTE';
+}
+</script>
+
+</body>
+</html>
+
